@@ -2,11 +2,11 @@
     <div id="login_page">
       <div class="login_head"></div>
       <div id="login_btn" class="btn"></div>
-      <div class="msgbox"><span class="forget">忘记密码？</span></div>
+      <div class="msgbox"><span class="forget" >忘记密码？</span></div>
       <div class="activation_box">
         <h3>激活账户</h3>
         <p>您已经是会员？全新周生生之友计划已经推出，请激活您的帐户。</p>
-        <div class="active_btn" id="active_btn"></div>
+        <router-link class="active_btn" id="active_btn" :to="{ name: 'signIn_page', params:'?signIn_page'}""></router-link>
       </div>
       <div class="signup_box">
         <p>加入周生生之友，获得更多贵宾级礼遇及服务。</p>
@@ -19,10 +19,27 @@
     </div>
 </template>
 <script type="text/ecmascript-6">
-export default {
-  name: 'login_page'
-}
+import Vue from 'vue'
+import Router from 'vue-router'
+import loginPage from '@/components/login_page/login_page'
+import signInPage from '@/components/signIn_page/signIn_page'
+Vue.use(Router)
 
+export default new Router({
+  name: 'login_page',
+  routes: [
+    {
+      path: '/',
+      name: 'login_page',
+      component: loginPage
+    },
+    {
+      path: '/signIn_page',
+      name: 'signIn_page',
+      component: signInPage
+    }
+  ]
+})
 </script>
 <style lang="stylus" type="stylesheet/stylus">
   #login_page
@@ -72,7 +89,8 @@ export default {
         margin-top: calc(100vh*(20/1039));
         width: calc(100vw*(528/640));
         line-height: calc(100vh*(33/1039));
-    #active_btn 
+    #active_btn
+        display:block
         margin-bottom: calc(100vh*(10/1039));
         margin-top: calc(100vh*(10/1039));
         width: calc(100vw*(520/640));
