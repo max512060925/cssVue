@@ -36,6 +36,34 @@ var router = express.Router();
 //   });
 // });
 
+var appData = require('../data.json');
+var seller = appData.seller;
+var goods = appData.goods;
+var ratings = appData.ratings;
+
+router.get('/seller', function (req, res) {
+	res.json({
+		errno: 0,
+		data: seller
+	});
+});
+
+router.get('/goods', function (req, res) {
+	res.json({
+		errno: 0,
+		data: goods
+	});
+});
+
+router.get('/ratings', function (req, res) {
+	res.json({
+		errno: 0,
+		data: ratings
+	});
+});
+
+app.use('/api', router);
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

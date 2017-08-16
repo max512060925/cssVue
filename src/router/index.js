@@ -1,20 +1,27 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import loginPage from '@/components/login_page/login_page'
-import signInPage from '@/components/signIn_page/signIn_page'
-Vue.use(Router)
+import goods from '@/components/goods/goods'
+import ratings from '@/components/ratings/ratings'
+import seller from '@/components/seller/seller'
 
+Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'login_page',
-      component: loginPage
+      path: '/goods',
+      name: 'goods',
+      component: goods
     },
     {
-      path: '/signIn_page',
-      name: 'signIn_page',
-      component: signInPage
+      path: '/ratings',
+      name: 'ratings',
+      component: ratings
+    },
+    {
+      path: '/seller',
+      name: 'seller',
+      component: seller
     }
-  ]
+  ],
+  linkActiveClass: 'active'
 })
