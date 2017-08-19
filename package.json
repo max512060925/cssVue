@@ -1,7 +1,7 @@
 {
-  "name": "cssVue",
+  "name": "elmVue",
   "version": "1.0.0",
-  "description": "cssVue",
+  "description": "elmVue",
   "author": "oookini <512060925@qq.com>",
   "private": true,
   "scripts": {
