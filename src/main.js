@@ -12,5 +12,5 @@ new Vue({
   template: '<App/>',
   components: { App }
 })
-router.replace('/ratings')
+router.replace('/goods')
 console.log(router)
