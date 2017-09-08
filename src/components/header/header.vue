@@ -9,8 +9,7 @@
 								<span	class="brand"></span>
 								<span	class="name">{{seller.name}}</span>
 						</div>
-						<div	class="description">
-								{{seller.description}}/{{seller.deliveryTime}}分钟送到
+						<div	class="description">{{seller.description}}/{{seller.deliveryTime}}分钟送到
 						</div>
 						<div	v-if="seller.supports"	class="supports">
 								<span	class="icon"	v-bind:class="classMap[seller.supports[0].type]"></span>
@@ -120,6 +119,13 @@ export	default	{
 				.content
 						display:	inline-block
 						margin-left:	14px;
+						.brand
+							display: inline-block;
+							vertical-align: top;
+							width: 30px;
+							height: 18px;
+							bg-img('img/brand');
+							background-size: 100%;
 						.description
 								margin-bottom:	10px;
 								line-height:	12px;

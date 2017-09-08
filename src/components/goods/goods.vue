@@ -1,13 +1,13 @@
 <template>
 	<div class="goods">
-		<div class="menu-wrapper">
+		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
-				<li v-for="(vel,index) in goods" class="menu-item"><span class="text border-1px"><span v-show="vel.type>0" class="icon" :class="classMap[vel.type]"></span>{{vel.name}}</span></li>
+				<li v-for="(vel,index) in goods" class="menu-item" :class="{current:currentIndex===index}" @click="selectMenu"><span class="text border-1px"><span v-show="vel.type>0" class="icon" :class="classMap[vel.type]"></span>{{vel.name}}</span></li>
 			</ul>
 		</div>
-		<div class="food-wrapper">
+		<div class="food-wrapper" ref="foodWrapper">
 			<ul>
-				<li v-for="(vel,index) in goods" class="food-list">
+				<li v-for="(vel,index) in goods" class="food-list food-hook">
 					<h1 class="title">{{vel.name}}</h1>
 					<ul>
 						<li v-for="(food,i) in vel.foods" class="food-item border-1px">
@@ -36,7 +36,8 @@
 </template>
 <script type="text/ecmascript-6">
 import	axios	from	'axios'
-export default {
+import	BScroll	from	'better-scroll'
+export	default {
 	props: {
 		seller: {
 			type: Object
@@ -47,7 +48,42 @@ export default {
 	},
 	data() {
 		return {
-			goods: []
+			goods: [],
+			listH: [],
+			scrollY: 0
+		}
+	},
+	computed: {
+		currentIndex() {
+			for (let i = 0; i < this.listH.length; i++) {
+				let h1 = this.listH[i]
+				let h2 = this.listH[i + 1]
+				if ((this.scrollY >= h1 && this.scrollY < h2) || !h2) {
+					return i
+				}
+			}
+			return 0
+		}
+	},
+	methods: {
+		_initScroll() {
+			this.menuScroll = new BScroll(this.$refs.menuWrapper,{})
+			this.foodScroll = new BScroll(this.$refs.foodWrapper,{
+				probeType: 3
+			})
+			this.foodScroll.on('scroll',(p) => {
+				this.scrollY = Math.abs(Math.round(p.y))
+			})
+		},
+		_calcliheight() {
+			let foodLi = this.$refs.foodWrapper.getElementsByClassName('food-hook')
+			let height = 0
+			this.listH.push(height)
+			for (let i = 0; i < foodLi.length; i++) {
+				height += foodLi[i].clientHeight
+				this.listH.push(height)
+				console.log(this.listH)
+			}
 		}
 	},
 	created()	{
@@ -56,6 +92,10 @@ export default {
 				if	(res.data.errno	===	0)	{
 						this.goods	=	data
 						console.log(this.goods)
+						this.$nextTick(() => {
+							this._initScroll()
+							this._calcliheight()
+						})
 				}
 		})
 	},
@@ -82,6 +122,15 @@ export default {
 			width: 56px;
 			line-height: 14px;
 			padding: 0 12px;
+			&.current
+				position: relative
+				background: #fff
+				margin-top:-1px
+				z-index:10
+
+				.text
+					font-weight:700
+					border-none()
 			.icon
 				display:	inline-block;
 				vertical-align:	top;
@@ -143,7 +192,7 @@ export default {
 				.desc
 					margin-bottom: 8px;
 				.extra
-					&.count
+					.count
 						margin-right: 12px;
 				.price
 					font-weight: 400;

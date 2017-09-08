@@ -23,7 +23,7 @@
 		vertical-align: top;
 		width: 30px;
 		height: 18px;
-		bg-img('brand');
+		bg-img('img/brand');
 		background-size: 100%;
 	.name
 		margin-left: 6px;
