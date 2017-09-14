@@ -2,7 +2,7 @@
 	<div class="goods">
 		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
-				<li v-for="(vel,index) in goods" class="menu-item" :class="{current:currentIndex===index}" @click="selectMenu"><span class="text border-1px"><span v-show="vel.type>0" class="icon" :class="classMap[vel.type]"></span>{{vel.name}}</span></li>
+				<li v-for="(vel,index) in goods" class="menu-item" :class="{current:currentIndex===index}" @click="selectMenu(index,$event)"><span class="text border-1px"><span v-show="vel.type>0" class="icon" :class="classMap[vel.type]"></span>{{vel.name}}</span></li>
 			</ul>
 		</div>
 		<div class="food-wrapper" ref="foodWrapper">
@@ -31,17 +31,16 @@
 				</li>
 			</ul>
 		</div>
+		<shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
 
 </template>
 <script type="text/ecmascript-6">
 import	axios	from	'axios'
 import	BScroll	from	'better-scroll'
+import	shopcart	from	'@/components/shopcart/shopcart'
 export	default {
 	props: {
-		seller: {
-			type: Object
-		},
 		classMap: {
 			type: Array
 		}
@@ -49,6 +48,7 @@ export	default {
 	data() {
 		return {
 			goods: [],
+			seller: [],
 			listH: [],
 			scrollY: 0
 		}
@@ -66,8 +66,17 @@ export	default {
 		}
 	},
 	methods: {
+		selectMenu(i,e) {
+			if (!e._constructed) {
+				return false
+			}
+			let foodLi = this.$refs.foodWrapper.getElementsByClassName('food-hook')
+			this.foodScroll.scrollToElement(foodLi[i],300)
+		},
 		_initScroll() {
-			this.menuScroll = new BScroll(this.$refs.menuWrapper,{})
+			this.menuScroll = new BScroll(this.$refs.menuWrapper,{
+				click: true
+			})
 			this.foodScroll = new BScroll(this.$refs.foodWrapper,{
 				probeType: 3
 			})
@@ -82,22 +91,34 @@ export	default {
 			for (let i = 0; i < foodLi.length; i++) {
 				height += foodLi[i].clientHeight
 				this.listH.push(height)
-				console.log(this.listH)
 			}
 		}
 	},
 	created()	{
-		axios.get('/api/goods').then((res)	=>	{
-				let	data	=	res.data.data
-				if	(res.data.errno	===	0)	{
-						this.goods	=	data
+		let getGoods = () => {
+			return axios.get('/api/goods')
+		}
+		let getSeller = () => {
+			return axios.get('/api/seller')
+		}
+		axios.all([getGoods(),getSeller()]).then(axios.spread((goodsData,sellerData) =>	{
+				let	goodsD	=	goodsData.data.data
+				let sellerD = sellerData.data.data
+				if	(goodsData.data.errno	===	0)	{
+						this.goods	=	goodsD
 						console.log(this.goods)
 						this.$nextTick(() => {
 							this._initScroll()
 							this._calcliheight()
 						})
 				}
-		})
+				if (sellerData.data.errno	===	0) {
+					this.seller = sellerD
+				}
+		}))
+	},
+	components: {
+		shopcart
 	},
   name: 'goods'
 }
