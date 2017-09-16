@@ -25,6 +25,10 @@
 									<span class="now">¥{{food.price}}</span>
 									<span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
 								</div>
+								<div class="btnPositon">
+									<btn class="" :food="food"></btn>
+								</div>
+
 							</div>
 						</li>
 					</ul>
@@ -39,6 +43,7 @@
 import	axios	from	'axios'
 import	BScroll	from	'better-scroll'
 import	shopcart	from	'@/components/shopcart/shopcart'
+import	btn	from	'@/components/btn/btn'
 export	default {
 	props: {
 		classMap: {
@@ -78,6 +83,7 @@ export	default {
 				click: true
 			})
 			this.foodScroll = new BScroll(this.$refs.foodWrapper,{
+				click: true,
 				probeType: 3
 			})
 			this.foodScroll.on('scroll',(p) => {
@@ -118,7 +124,8 @@ export	default {
 		}))
 	},
 	components: {
-		shopcart
+		shopcart,
+    btn
 	},
   name: 'goods'
 }
@@ -226,6 +233,8 @@ export	default {
 						text-decoration: line-through;
 						font-size: 10px;
 						color: rgb(147,153,159);
-
-
+				.btnPositon
+					position: absolute;
+					right: 0;
+					bottom: 12px;
 </style>
