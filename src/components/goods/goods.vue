@@ -26,16 +26,15 @@
 									<span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
 								</div>
 								<div class="btnPositon">
-									<btn class="" :food="food"></btn>
+									<btn @add="addFood" class="" :food="food"></btn>
 								</div>
-
 							</div>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</div>
-		<shopcart :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+		<shopcart ref="shopcart" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :select="select"></shopcart>
 	</div>
 
 </template>
@@ -68,6 +67,17 @@ export	default {
 				}
 			}
 			return 0
+		},
+		select() {
+			let arr = []
+			this.goods.forEach((good) => {
+				good.foods.forEach((food) => {
+					if (food.count > 0) {
+						arr.push(food)
+					}
+				})
+			})
+			return arr
 		}
 	},
 	methods: {
@@ -98,6 +108,12 @@ export	default {
 				height += foodLi[i].clientHeight
 				this.listH.push(height)
 			}
+		},
+		addFood(target) {
+			this._drop(target)
+		},
+		_drop(target) {
+			this.$refs.shopcart.drop(target)
 		}
 	},
 	created()	{
@@ -112,7 +128,6 @@ export	default {
 				let sellerD = sellerData.data.data
 				if	(goodsData.data.errno	===	0)	{
 						this.goods	=	goodsD
-						console.log(this.goods)
 						this.$nextTick(() => {
 							this._initScroll()
 							this._calcliheight()

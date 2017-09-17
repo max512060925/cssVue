@@ -1,6 +1,8 @@
 <template>
 	<div class="btn">
-    <div class="car-decrease icon-remove_circle_outline" v-show="food.count>0" @click="decr($event)"></div>
+		<transition name="move">
+    	<div class="car-decrease icon-remove_circle_outline" v-show="food.count>0" @click="decr($event)"></div>
+		</transition>
     <div class="cart-count" v-show="food.count>0">
       {{food.count}}
     </div>
@@ -24,7 +26,7 @@ export default {
 				return
 			}
 			this.food.count = (this.food.count ? this.food.count + 1 : Vue.set(this.food,'count',1))
-			console.log(this.food.count)
+			this.$emit('add',event.target)
 		},
 		decr(e) {
 			if (!e._constructed) {
@@ -39,6 +41,12 @@ export default {
 <style lang="stylus" type="stylesheet/stylus">
 .btn
 	font-size: 0;
+	.move-enter, .move-leave-to 
+		opacity: 0;
+		transform: translate3D(24px,0,0) rotateZ(360deg);
+	.move-enter-active,.move-leave-active
+		opacity: 1;
+		transition: all 0.5s linear;
 	.car-decrease,.cart-add
 		display: inline-block;
 		padding: 6px;
