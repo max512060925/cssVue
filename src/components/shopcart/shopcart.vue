@@ -122,7 +122,6 @@ export default {
 			if (this.listShow && this.totleCount) {
 				if (!this.scroll) {
 					this.$nextTick(() => {
-						console.log(111)
 						this.scroll = new BScroll(this.$refs.list,{
 							click: true
 						})

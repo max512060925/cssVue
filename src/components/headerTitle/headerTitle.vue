@@ -1,5 +1,5 @@
 <template>
-	<div class="title">
+	<div class="headTitle">
 		<div class="line"></div>
 		<div class="text">{{mes}}</div>
 		<div class="line"></div>
@@ -16,7 +16,7 @@
 }
 </script>
 <style lang="stylus" type="stylesheet/stylus">
-.title
+.headTitle
 	margin: 2px 0 8px 0
 	.brand
 		display: inline-block;

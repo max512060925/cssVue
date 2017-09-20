@@ -72,7 +72,6 @@ export	default	{
 		methods:	{
 				detailShow:	function()	{
 						this.detail	=	true
-            console.log($('.text').text())
 				},
 				hideDetail:	function()	{
 						this.detail	=	false
@@ -84,7 +83,6 @@ export	default	{
       }
     },
 		created()	{
-        console.log(this.classMap)
 				axios.get('/api/seller').then((res)	=>	{
 						let	data	=	res.data.data
 						if	(res.data.errno	===	0)	{
@@ -92,7 +90,6 @@ export	default	{
 						}
 				})
         // this.classMap = ['decrease','discount','guarantee','invoice','special']
-        console.log(this.classMap)
 		},
 		components:	{
 				'v-star':	star,
@@ -119,6 +116,20 @@ export	default	{
 				.content
 						display:	inline-block
 						margin-left:	14px;
+						.title
+							margin: 2px 0 8px 0
+							.brand
+								display: inline-block;
+								vertical-align: top;
+								width: 30px;
+								height: 18px;
+								bg-img('img/brand');
+								background-size: 100%;
+							.name
+								margin-left: 6px;
+								font-size: 16px;
+								line-height: 18px;
+								font-weight: bold;
 						.brand
 							display: inline-block;
 							vertical-align: top;

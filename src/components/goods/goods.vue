@@ -10,7 +10,7 @@
 				<li v-for="(vel,index) in goods" class="food-list food-hook">
 					<h1 class="title">{{vel.name}}</h1>
 					<ul>
-						<li v-for="(food,i) in vel.foods" class="food-item border-1px">
+						<li v-for="(food,i) in vel.foods" class="food-item border-1px" @click="selectF(food,$event)">
 							<div class="icon">
 								<img width="57" :src="food.icon">
 							</div>
@@ -25,9 +25,7 @@
 									<span class="now">¥{{food.price}}</span>
 									<span class="old" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
 								</div>
-								<div class="btnPositon">
-									<btn @add="addFood" class="" :food="food"></btn>
-								</div>
+								<btn @add="addFood" class="btnPositon" :food="food"></btn>
 							</div>
 						</li>
 					</ul>
@@ -35,8 +33,8 @@
 			</ul>
 		</div>
 		<shopcart ref="shopcart" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :select="select" @clear="empty"></shopcart>
+		<food :food="selectFood" ref="showFood" @add="addFood"></food>
 	</div>
-
 </template>
 <script type="text/ecmascript-6">
 import	Vue	from	'vue'
@@ -44,6 +42,7 @@ import	axios	from	'axios'
 import	BScroll	from	'better-scroll'
 import	shopcart	from	'@/components/shopcart/shopcart'
 import	btn	from	'@/components/btn/btn'
+import	food	from	'@/components/food/food'
 export	default {
 	props: {
 		classMap: {
@@ -55,7 +54,9 @@ export	default {
 			goods: [],
 			seller: [],
 			listH: [],
-			scrollY: 0
+			scrollY: 0,
+			selectFood: {},
+
 		}
 	},
 	computed: {
@@ -121,9 +122,18 @@ export	default {
 			})
 		},
 		_drop(target) {
-			// this.$nextTick(() => {
-				this.$refs.shopcart.drop(target)
-			// })
+			this.$refs.shopcart.drop(target)
+		},
+		selectF(food,e) {
+			if (!e._constructed) {
+				return false
+			}
+			this.selectFood = food
+			this.$refs.showFood.show()
+		},
+		changeType(n) {
+			console.log(n)
+			this.selectType = n
 		}
 	},
 	created()	{
@@ -150,7 +160,8 @@ export	default {
 	},
 	components: {
 		shopcart,
-    btn
+    btn,
+		food
 	},
   name: 'goods'
 }
