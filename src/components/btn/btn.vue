@@ -17,9 +17,6 @@ export default {
       type: Object
     }
   },
-	created() {
-		console.log(11)
-	},
 	methods: {
 		add(e) {
 			if (!e._constructed) {

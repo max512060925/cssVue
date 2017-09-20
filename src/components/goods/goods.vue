@@ -34,11 +34,12 @@
 				</li>
 			</ul>
 		</div>
-		<shopcart ref="shopcart" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :select="select"></shopcart>
+		<shopcart ref="shopcart" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice" :select="select" @clear="empty"></shopcart>
 	</div>
 
 </template>
 <script type="text/ecmascript-6">
+import	Vue	from	'vue'
 import	axios	from	'axios'
 import	BScroll	from	'better-scroll'
 import	shopcart	from	'@/components/shopcart/shopcart'
@@ -112,8 +113,17 @@ export	default {
 		addFood(target) {
 			this._drop(target)
 		},
+		empty() {
+			this.goods.forEach((good) => {
+				good.foods.forEach((food) => {
+						Vue.delete(food,'count')
+				})
+			})
+		},
 		_drop(target) {
-			this.$refs.shopcart.drop(target)
+			// this.$nextTick(() => {
+				this.$refs.shopcart.drop(target)
+			// })
 		}
 	},
 	created()	{

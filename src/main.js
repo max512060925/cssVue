@@ -13,4 +13,3 @@ new Vue({
   components: { App }
 })
 router.replace('/goods')
-console.log(router)
