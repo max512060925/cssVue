@@ -28,6 +28,26 @@
 				<div class="rating">
 					<h1 class="title">商品评价</h1>
 					<ratingSelect @type="changeType" @switch="switchType" :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingSelect>
+					<div class="rating-wrapper">
+						<ul v-if="food.ratings && food.ratings.length">
+							<li v-for="rating in food.ratings" class="rating-item">
+								<div class="user">
+									<span class="name">{{rating.username}}</span>
+									<img class="avatar" :src="rating.avatar" width="12" height="12">
+								</div>
+								<div class="time">
+									{{rating.rateTime}}
+								</div>
+								<p class="text">
+									<span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
+									{{rating.text}}
+								</p>
+							</li>
+						</ul>
+						<div class="no-rating" v-else>
+
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -91,8 +111,8 @@ export default {
 		changeType(n) {
 			this.selectType = n
 		},
-		switchType() {
-			this.onlyContent = !this.onlyContent
+		switchType(n) {
+			this.onlyContent = n
 		}
 	},
 	components: {
@@ -104,6 +124,7 @@ export default {
 }
 </script>
 <style lang="stylus" type="stylesheet/stylus">
+@import	"../../common/stylus/mixin";
 .food
 	position: fixed;
 	left: 0;
@@ -202,4 +223,31 @@ export default {
 			margin-left: 18px;
 			font-size: 14px;
 			color: rgb(7,17,27);
+		.rating-wrapper
+			padding: 0 18px;
+			.rating-item
+				position: relative;
+				padding: 16px 0;
+				border-1px(rgba(7,17,27,0.1))
+				.user
+					position: absolute;
+					right: 0;
+					top: 16px;
+					font-size: 0;
+					line-height: 12px;
+					.name
+						display: inline-block;
+						vertical-align: top;
+						margin-right: 6px;
+						font-size: 10px;
+						color: rgb(147,153,159);
+					.avatar
+						border-radius: 50%;
+					.time
+						line-height: 12px;
+						font-size: 10px;
+						color: rgb(147,153,159);
+						margin-bottom: 6px;
+						 
+
 </style>

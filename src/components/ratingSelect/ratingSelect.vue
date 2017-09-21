@@ -65,7 +65,7 @@ export default {
 			if (!e._constructed) {
 				return false
 			}
-			this.$emit('switch')
+			this.$emit('switch',!this.onlyContent)
 		}
 	},
   name: 'default'
