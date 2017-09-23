@@ -36,7 +36,7 @@
 									<img class="avatar" :src="rating.avatar" width="12" height="12">
 								</div>
 								<div class="time">
-									{{rating.rateTime | date('YYYY-MM-DD')}}
+									{{rating.rateTime | date('YYYY-MM-DD HH:mm')}}
 								</div>
 								<p class="text">
 									<span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
