@@ -30,13 +30,13 @@
 					<ratingSelect @type="changeType" @switch="switchType" :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingSelect>
 					<div class="rating-wrapper">
 						<ul v-if="food.ratings && food.ratings.length">
-							<li v-for="rating in food.ratings" class="rating-item">
+							<li v-for="rating in food.ratings" v-show="showList(rating.rateType,rating.text)" class="rating-item border-1px">
 								<div class="user">
 									<span class="name">{{rating.username}}</span>
 									<img class="avatar" :src="rating.avatar" width="12" height="12">
 								</div>
 								<div class="time">
-									{{rating.rateTime}}
+									{{rating.rateTime | date('YYYY-MM-DD')}}
 								</div>
 								<p class="text">
 									<span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
@@ -45,7 +45,7 @@
 							</li>
 						</ul>
 						<div class="no-rating" v-else>
-
+							暂无评价
 						</div>
 					</div>
 				</div>
@@ -59,9 +59,7 @@ import	BScroll	from	'better-scroll'
 import	btn	from	'@/components/btn/btn'
 import	split	from	'@/components/split/split'
 import	ratingSelect	from	'@/components/ratingSelect/ratingSelect'
-const ALL = 2;
-const	POSITIVE = 0;
-const NEGATIVE = 1;
+const ALL = 2
 export default {
 	props: {
 		food: {
@@ -84,7 +82,7 @@ export default {
 		show() {
 			this.showFlag = true
 			this.selectType = ALL
-			this.onlyContent = false
+			// this.onlyContent = false
 			this.$nextTick(() => {
 				if (!this.scroll) {
 					this.scroll = new BScroll(this.$refs.food,{
@@ -110,9 +108,25 @@ export default {
 		},
 		changeType(n) {
 			this.selectType = n
+			this.$nextTick(() => {
+				this.scroll.refresh()
+			})
 		},
 		switchType(n) {
 			this.onlyContent = n
+			this.$nextTick(() => {
+				this.scroll.refresh()
+			})
+		},
+		showList(type,text) {
+			if (this.onlyContent && !text) {
+				return false
+			}
+			if (this.selectType === ALL) {
+				return true
+			} else {
+				return type === this.selectType
+			}
 		}
 	},
 	components: {
@@ -243,11 +257,25 @@ export default {
 						color: rgb(147,153,159);
 					.avatar
 						border-radius: 50%;
-					.time
-						line-height: 12px;
-						font-size: 10px;
+				.time
+					line-height: 12px;
+					font-size: 10px;
+					color: rgb(147,153,159);
+					margin-bottom: 6px;
+				.text
+					line-height: 16px;
+					font-size: 12px;
+					color: rgb(7,17,27);
+					.icon-thumb_up,.icon-thumb_down
+						margin-right: 4px;
+						line-height: 16px;
+						font-size: 12px;
+					.icon-thumb_up
+						color: rgb(0,160,220);
+					.icon-thumb_down
 						color: rgb(147,153,159);
-						margin-bottom: 6px;
-						 
-
+			.no-rating
+				padding: 16px 0
+				font-size: 12px;
+				color: rgb(147,153,159)
 </style>
